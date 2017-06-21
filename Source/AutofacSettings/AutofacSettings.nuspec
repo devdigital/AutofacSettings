@@ -8,7 +8,7 @@
         <description>Provides setting type injection via convention.</description>
         <dependencies>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="Autofac" version="4.0.0" />
+                <dependency id="Autofac" version="3.5.2" />
             </group>
         </dependencies>
     </metadata>

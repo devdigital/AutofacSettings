@@ -10,19 +10,9 @@
     public class AutofacSettingsSource : IRegistrationSource
     {
         private readonly string settingsPostfix;
-
-        public AutofacSettingsSource()
+        
+        public AutofacSettingsSource(string settingsPostfix = "Settings")
         {
-            this.settingsPostfix = "Settings";
-        }
-
-        public AutofacSettingsSource(string settingsPostfix)
-        {
-            if (string.IsNullOrWhiteSpace(settingsPostfix))
-            {
-                throw new ArgumentNullException(nameof(settingsPostfix));
-            }
-
             this.settingsPostfix = settingsPostfix;
         }
 

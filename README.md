@@ -63,11 +63,36 @@ We can now inject this type anywhere we need logging settings, and the propertie
 ```
 public class ConfigureLoggingTask
 {
-   public void Run(LoggingSettings settings)
+   public ConfigureLoggingTask(LoggingSettings settings)
    {
-      // configure logging based on settings
+       this.settings = settings;
+   }
+   
+   public void Run()
+   {
+      // configure logging based on this.settings
    }
 }
 ```
 
+# Getting settings directly
 
+There may be times where you wish to get a single setting value, or not inject setting types. In this case you can use the other methods available on `ISettingsSource`:
+
+```
+public class MyInfrastructureCode
+{
+   public MyInfrastructureCode(ISettingsSource settingsSource)
+   {
+      var isLoggingEnabled = settingsSource.GetSettingValue("myApp:Logging:Enabled", defaultValue: false);
+      
+      // OR
+      
+      var loggingSettings = settingsSource.GetSettings<LoggingSettings>();      
+   }
+}
+```
+
+The `GetSettingValue` method can retrieve a single setting value. If the value is not available or is not valid for the setting type, then the provided `defaultValue` is returned.
+
+> Note if you require settings in your *domain* types and do not wish to inject them, then it's recommended you don't inject `ISettingsSource` directly otherwise this would violate DIP. Instead, either inject the scalar setting values and configure Autofac to resolve them via `ISettingsSource`, or create an domain abstraction for retrieving settings and an implementation which uses `ISettingsSource`.

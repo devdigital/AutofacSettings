@@ -84,11 +84,16 @@ public class MyInfrastructureCode
 {
    public MyInfrastructureCode(ISettingsSource settingsSource)
    {
-      var isLoggingEnabled = settingsSource.GetSettingValue("myApp:Logging:Enabled", defaultValue: false);
+       this.settingsSource = settingsSource;
+   }
+   
+   public async Task Run()
+   {
+      var isLoggingEnabled = await this.settingsSource.GetSettingValue("myApp:Logging:Enabled", defaultValue: false);
       
       // OR
       
-      var loggingSettings = settingsSource.GetSettings<LoggingSettings>();      
+      var loggingSettings = await this.settingsSource.GetSettings<LoggingSettings>();      
    }
 }
 ```

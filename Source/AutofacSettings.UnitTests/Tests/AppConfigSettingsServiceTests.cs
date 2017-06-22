@@ -15,7 +15,7 @@
         [Theory]
         [AutoData]
         public async Task GetSettingValueExistingShouldReturnValue(
-            AppConfigSettingsService appConfigSettingsService)
+            TestAppConfigSettingsService appConfigSettingsService)
         {
             var settingValue = await appConfigSettingsService.GetSettingValue("Logging:Enabled", false);
             Assert.True(settingValue);
@@ -24,7 +24,7 @@
         [Theory]
         [AutoData]
         public async Task GetSettingValueNotExistingShouldReturnDefault(
-            AppConfigSettingsService appConfigSettingsService,
+            TestAppConfigSettingsService appConfigSettingsService,
             string defaultValue)
         {
             var settingValue = await appConfigSettingsService.GetSettingValue("UnexistingSetting", defaultValue);
@@ -34,21 +34,21 @@
         [Theory]
         [AutoData]
         public async Task GetSettingsExistingShouldReturnPopulatedType(
-            AppConfigSettingsService appConfigSettingsService)
+            TestAppConfigSettingsService appConfigSettingsService)
         {
             var expectedLoggingSettings = new LoggingSettings { Enabled = true, IncludeDetail = true };
             var loggingSettings = await appConfigSettingsService.GetSettings<LoggingSettings>();
-            expectedLoggingSettings.ShouldBeEquivalentTo(loggingSettings);
+            loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
         }
 
         [Theory]
         [AutoData]
         public async Task GetSettingsExistingAsObjectShouldReturnObject(
-            AppConfigSettingsService appConfigSettingsService)
+            TestAppConfigSettingsService appConfigSettingsService)
         {
             var expectedLoggingSettings = new { Enabled = true, IncludeDetail = true };
             var loggingSettings = await appConfigSettingsService.GetSettings(typeof(LoggingSettings));
-            expectedLoggingSettings.ShouldBeEquivalentTo(loggingSettings);
+            loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
         }
     }
 }

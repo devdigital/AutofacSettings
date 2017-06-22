@@ -2,5 +2,9 @@
 {
     public class TestAppConfigSettingsService : AppConfigSettingsService
     {
+        public TestAppConfigSettingsService()
+            : base(string.Empty, "Settings")
+        {
+        }
     }
 }

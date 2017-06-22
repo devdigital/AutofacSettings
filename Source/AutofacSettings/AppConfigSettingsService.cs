@@ -14,8 +14,13 @@
 
         private readonly string settingsPostfix;
 
-        public AppConfigSettingsService(string appKeyPrefix = "", string settingsPostfix = "Settings")
+        public AppConfigSettingsService(string appKeyPrefix, string settingsPostfix)
         {
+            if (string.IsNullOrWhiteSpace(settingsPostfix))
+            {
+                throw new ArgumentNullException(nameof(settingsPostfix));
+            }
+
             this.settings = ConfigurationManager.AppSettings;
             this.appKeyPrefix = appKeyPrefix;
             this.settingsPostfix = settingsPostfix;            

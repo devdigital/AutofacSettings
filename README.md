@@ -89,7 +89,9 @@ public class MyInfrastructureCode
    
    public async Task Run()
    {
-      var isLoggingEnabled = await this.settingsSource.GetSettingValue("myApp:Logging:Enabled", defaultValue: false);
+      var isLoggingEnabled = await this.settingsSource.GetSettingValue(
+        "myApp:Logging:Enabled", 
+        defaultValue: false);
       
       // OR
       

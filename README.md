@@ -95,4 +95,4 @@ public class MyInfrastructureCode
 
 The `GetSettingValue` method can retrieve a single setting value. If the value is not available or is not valid for the setting type, then the provided `defaultValue` is returned.
 
-> Note if you require settings in your *domain* types and do not wish to inject them, then it's recommended you don't inject `ISettingsSource` directly otherwise this would violate DIP. Instead, either inject the scalar setting values and configure Autofac to resolve them via `ISettingsSource`, or create an domain abstraction for retrieving settings and an implementation which uses `ISettingsSource`.
+> Note if you require settings in your *domain* types but do not wish to inject them, then it's not recommended that you inject `ISettingsSource` directly otherwise this would violate DIP. Instead, either inject the scalar setting values and configure Autofac to resolve them via `ISettingsSource`, or create a domain abstraction for retrieving settings and an implementation which uses `ISettingsSource`.

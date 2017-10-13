@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/devdigital/AutofacSettings/compare/v0.1.7...v0.3.0) (2017-10-13)
+
+
+### Features
+
+* adds aspnetcore support ([433e844](https://github.com/devdigital/AutofacSettings/commit/433e844))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/devdigital/AutofacSettings/compare/v0.1.6...v0.1.7) (2017-06-22)
 

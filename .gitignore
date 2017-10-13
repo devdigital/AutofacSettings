@@ -3,3 +3,5 @@ packages
 node_modules
 bin
 obj
+/tools
+/artifacts

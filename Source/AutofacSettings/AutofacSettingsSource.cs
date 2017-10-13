@@ -9,10 +9,13 @@
 
     public class AutofacSettingsSource : IRegistrationSource
     {
+        private readonly ISettingsService settingsService;
+
         private readonly string settingsPostfix;
         
-        public AutofacSettingsSource(string settingsPostfix = "Settings")
+        public AutofacSettingsSource(ISettingsService settingsService, string settingsPostfix = "Settings")
         {
+            this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsPostfix));
             this.settingsPostfix = settingsPostfix;
         }
 
@@ -20,13 +23,12 @@
             Service service,
             Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor)
         {
-            var typedService = service as IServiceWithType;
-            if (typedService != null && typedService.ServiceType.IsClass
+            if (service is IServiceWithType typedService && typedService.ServiceType.IsClass
                 && typedService.ServiceType.Name.EndsWith(this.settingsPostfix))
             {
                 yield return
                     RegistrationBuilder.ForDelegate(
-                        (c, p) => c.Resolve<ISettingsService>().GetSettings(typedService.ServiceType).Result)
+                        (c, p) => this.settingsService.GetSettings(typedService.ServiceType).GetAwaiter().GetResult())
                         .As(typedService.ServiceType)
                         .CreateRegistration();
             }

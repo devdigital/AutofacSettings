@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/devdigital/AutofacSettings/compare/v0.3.0...v0.4.0) (2017-11-09)
+
+
+### Features
+
+* add alias support (#3) ([f041720](https://github.com/devdigital/AutofacSettings/commit/f041720))
+* add custom conversion support (#2) ([5668e0e](https://github.com/devdigital/AutofacSettings/commit/5668e0e))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/devdigital/AutofacSettings/compare/v0.1.7...v0.3.0) (2017-10-13)
 

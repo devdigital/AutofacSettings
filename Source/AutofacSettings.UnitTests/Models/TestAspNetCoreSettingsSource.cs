@@ -1,16 +1,16 @@
 ﻿using System.IO;
+using AutofacSettings.Sources;
 using Microsoft.Extensions.Configuration;
 
 namespace AutofacSettings.UnitTests.Models
 {
-    public class TestAspNetCoreSettingsService : AspNetCoreSettingsService
+    public class TestAspNetCoreSettingsSource : AspNetCoreSettingsSource
     {
-        public TestAspNetCoreSettingsService()
-            : base(TestSettings(), string.Empty, "Settings")
+        public TestAspNetCoreSettingsSource() : base(Settings())
         {
         }
 
-        private static IConfiguration TestSettings()
+        private static IConfiguration Settings()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

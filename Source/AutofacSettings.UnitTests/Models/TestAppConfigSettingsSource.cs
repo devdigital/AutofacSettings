@@ -1,16 +1,15 @@
 ﻿using System.Collections.Specialized;
-using Microsoft.Extensions.Configuration;
+using AutofacSettings.Sources;
 
 namespace AutofacSettings.UnitTests.Models
 {
-    public class TestAppConfigSettingsService : AppConfigSettingsService
+    public class TestAppConfigSettingsSource : AppConfigSettingsSource
     {
-        public TestAppConfigSettingsService()
-            : base(TestSettings(), string.Empty, "Settings")
+        public TestAppConfigSettingsSource() : base(Settings())
         {
         }
 
-        private static NameValueCollection TestSettings()
+        private static NameValueCollection Settings()
         {
             return new NameValueCollection
             {

@@ -1,8 +1,7 @@
-﻿using System.IO;
-using Autofac;
+﻿using Autofac;
 using AutofacSettings.UnitTests.Models;
+using AutofacSettings.UnitTests.Services;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 
@@ -12,13 +11,15 @@ namespace AutofacSettings.UnitTests.Tests
     {
         [Theory]
         [AutoData]
-        public void AutofacSettingsSourceReturnsExpectedSettings()
+        public void AutofacSettingsSourceReturnsExpectedSettings(
+            TestAspNetCoreSettingsSource source,
+            SettingsServiceBuilder serviceBuilder)
         {
-            var settings = GetSettings();
+            var service = serviceBuilder.WithSource(source).Build();
 
             var builder = new ContainerBuilder();
             builder.RegisterSource(
-                new AutofacSettingsSource(new AspNetCoreSettingsService(settings)));
+                new AutofacSettingsRegistrationSource(service));
             
             var container = builder.Build();
             var loggingSettings = container.Resolve<LoggingSettings>();
@@ -29,15 +30,6 @@ namespace AutofacSettings.UnitTests.Tests
             };
 
             loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
-        }
-
-        private static IConfiguration GetSettings()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-            return builder.Build();
         }
     }
 }

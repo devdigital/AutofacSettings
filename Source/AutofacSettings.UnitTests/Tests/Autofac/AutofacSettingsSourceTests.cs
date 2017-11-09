@@ -5,7 +5,7 @@ using FluentAssertions;
 using Ploeh.AutoFixture.Xunit2;
 using Xunit;
 
-namespace AutofacSettings.UnitTests.Tests
+namespace AutofacSettings.UnitTests.Tests.Autofac
 {
     public class AutofacSettingsSourceTests
     {

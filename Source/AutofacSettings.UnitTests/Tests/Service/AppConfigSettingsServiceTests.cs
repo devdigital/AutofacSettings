@@ -1,17 +1,12 @@
-﻿using AutofacSettings.UnitTests.Services;
+﻿using System.Threading.Tasks;
+using AutofacSettings.UnitTests.Models;
+using AutofacSettings.UnitTests.Services;
+using FluentAssertions;
+using Ploeh.AutoFixture.Xunit2;
+using Xunit;
 
-namespace AutofacSettings.UnitTests.Tests
+namespace AutofacSettings.UnitTests.Tests.Service
 {
-    using System.Threading.Tasks;
-
-    using AutofacSettings.UnitTests.Models;
-
-    using FluentAssertions;
-
-    using Ploeh.AutoFixture.Xunit2;
-
-    using Xunit;
-
     public class AppConfigSettingsServiceTests
     {
         [Theory]

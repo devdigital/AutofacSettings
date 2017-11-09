@@ -17,6 +17,11 @@ namespace AutofacSettings.Sources
 
         public Task<string> GetSetting(string settingName)
         {
+            if (string.IsNullOrWhiteSpace(settingName))
+            {
+                throw new ArgumentNullException(nameof(settingName));
+            }
+
             return Task.FromResult(this.settings[settingName]);
         }
 

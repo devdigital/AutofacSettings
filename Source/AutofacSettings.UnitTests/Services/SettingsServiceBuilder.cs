@@ -12,9 +12,9 @@ namespace AutofacSettings.UnitTests.Services
 
         private ISettingsSource source;
 
-        private DefaultSettingConverter converter;
+        private ISettingConverter converter;
 
-        private ThrowOnMissingSettingHandler handler;
+        private IMissingSettingHandler handler;
 
         public SettingsServiceBuilder()
         {

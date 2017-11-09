@@ -17,6 +17,11 @@ namespace AutofacSettings.Sources
 
         public async Task<string> GetSetting(string settingName)
         {
+            if (string.IsNullOrWhiteSpace(settingName))
+            {
+                throw new ArgumentNullException(nameof(settingName));
+            }
+
             var dictionary = await this.GetSettings();
             return dictionary.ContainsKey(settingName) 
                 ? dictionary[settingName]

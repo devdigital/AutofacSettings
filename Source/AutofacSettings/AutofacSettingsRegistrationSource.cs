@@ -2,18 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using Autofac;
     using Autofac.Builder;
     using Autofac.Core;
 
-    public class AutofacSettingsSource : IRegistrationSource
+    public class AutofacSettingsRegistrationSource : IRegistrationSource
     {
         private readonly ISettingsService settingsService;
 
         private readonly string settingsPostfix;
         
-        public AutofacSettingsSource(ISettingsService settingsService, string settingsPostfix = "Settings")
+        public AutofacSettingsRegistrationSource(ISettingsService settingsService, string settingsPostfix = "Settings")
         {
             this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsPostfix));
             this.settingsPostfix = settingsPostfix;

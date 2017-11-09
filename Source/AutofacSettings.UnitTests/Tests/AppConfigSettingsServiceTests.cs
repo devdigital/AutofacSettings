@@ -1,4 +1,6 @@
-﻿namespace AutofacSettings.UnitTests.Tests
+﻿using AutofacSettings.UnitTests.Services;
+
+namespace AutofacSettings.UnitTests.Tests
 {
     using System.Threading.Tasks;
 
@@ -15,39 +17,47 @@
         [Theory]
         [AutoData]
         public async Task GetSettingValueExistingShouldReturnValue(
-            TestAppConfigSettingsService appConfigSettingsService)
+            TestAppConfigSettingsSource source,
+            SettingsServiceBuilder serviceBuilder)
         {
-            var settingValue = await appConfigSettingsService.GetSettingValue("Logging:Enabled", false);
+            var service = serviceBuilder.WithSource(source).Build();
+            var settingValue = await service.GetSettingValue("Logging:Enabled", false);
             Assert.True(settingValue);
         }
 
         [Theory]
         [AutoData]
         public async Task GetSettingValueNotExistingShouldReturnDefault(
-            TestAppConfigSettingsService appConfigSettingsService,
+            TestAppConfigSettingsSource source,
+            SettingsServiceBuilder serviceBuilder,
             string defaultValue)
         {
-            var settingValue = await appConfigSettingsService.GetSettingValue("UnexistingSetting", defaultValue);
+            var service = serviceBuilder.WithSource(source).Build();
+            var settingValue = await service.GetSettingValue("UnexistingSetting", defaultValue);
             Assert.Equal(defaultValue, settingValue);
         }
 
         [Theory]
         [AutoData]
         public async Task GetSettingsExistingShouldReturnPopulatedType(
-            TestAppConfigSettingsService appConfigSettingsService)
+            TestAppConfigSettingsSource source,
+            SettingsServiceBuilder serviceBuilder)
         {
+            var service = serviceBuilder.WithSource(source).Build();
             var expectedLoggingSettings = new LoggingSettings { Enabled = true, IncludeDetail = true };
-            var loggingSettings = await appConfigSettingsService.GetSettings<LoggingSettings>();
+            var loggingSettings = await service.GetSettings<LoggingSettings>();
             loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
         }
 
         [Theory]
         [AutoData]
         public async Task GetSettingsExistingAsObjectShouldReturnObject(
-            TestAppConfigSettingsService appConfigSettingsService)
+            TestAppConfigSettingsSource source,
+            SettingsServiceBuilder serviceBuilder)
         {
+            var service = serviceBuilder.WithSource(source).Build();
             var expectedLoggingSettings = new { Enabled = true, IncludeDetail = true };
-            var loggingSettings = await appConfigSettingsService.GetSettings(typeof(LoggingSettings));
+            var loggingSettings = await service.GetSettings(typeof(LoggingSettings));
             loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
         }
     }

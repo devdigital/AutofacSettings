@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutofacSettings.Converters;
+using AutofacSettings.Exceptions;
 using AutofacSettings.Handlers;
 
 namespace AutofacSettings
@@ -16,14 +17,14 @@ namespace AutofacSettings
 
         private readonly ISettingConverter converter;
 
-        private readonly IMissingSettingHandler handler;
+        private readonly IInvalidSettingHandler handler;
 
         public DefaultSettingsService(
             ISettingsSource source,
             string appKeyPrefix = "",
             string settingsPostfix = "Settings",            
             ISettingConverter converter = null,
-            IMissingSettingHandler handler = null)
+            IInvalidSettingHandler handler = null)
         {
             if (string.IsNullOrWhiteSpace(settingsPostfix))
             {
@@ -34,7 +35,7 @@ namespace AutofacSettings
             this.settingsPostfix = settingsPostfix;
             this.source = source ?? throw new ArgumentNullException(nameof(source));
             this.converter = converter ?? new DefaultSettingConverter();
-            this.handler = handler ?? new ThrowOnMissingSettingHandler();
+            this.handler = handler ?? new ThrowOnInvalidSettingHandler();
         }
 
         public async Task<TValue> GetSettingValue<TValue>(string settingName, TValue defaultValue)
@@ -70,25 +71,38 @@ namespace AutofacSettings
 
             var settingsPrefix = $"{prefix}{type.Name.Replace(this.settingsPostfix, string.Empty)}:";
 
-            var settings = await this.source.GetSettings();
-            foreach (var kvp in settings.Where(kvp => kvp.Key.StartsWith(settingsPrefix)))
+            var settingTypeProperties = type.GetProperties(
+                BindingFlags.Instance | BindingFlags.Public);
+
+            foreach (var property in settingTypeProperties)
             {
-                var key = kvp.Key;
-                var propertyName = key.Replace(settingsPrefix, string.Empty);
-                var property = type.GetProperty(propertyName);
-                if (property == null)
+                var settingName = $"{settingsPrefix}{property.Name}";
+
+                var settingValue = await this.source.GetSetting(settingName);
+                if (string.IsNullOrWhiteSpace(settingValue))
                 {
-                    this.handler.HandleMissingProperty(type, propertyName);
+                    this.handler.HandleMissingSetting(type, settingName);
                     continue;
                 }
 
-                var propertyValue = this.converter.Convert(
-                    settings[key],
-                    property.PropertyType);
+                object propertyValue;
+                try
+                {
+                    propertyValue = this.converter.Convert(
+                        settingValue,
+                        property.PropertyType);
+                }
+                catch (Exception exception)
+                {
+                    var message =
+                        $"There was an exception converting setting '{settingName}' value of '{settingValue}' to type {property.PropertyType}.";
+
+                    throw new AutofacSettingsConversionException(message, exception);
+                } 
 
                 property.SetValue(instance, propertyValue, null);
             }
-
+          
             return instance;
         }
     }

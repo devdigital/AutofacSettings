@@ -1,4 +1,5 @@
 ﻿using System;
+using AutofacSettings.Exceptions;
 
 namespace AutofacSettings.Converters
 {
@@ -23,7 +24,7 @@ namespace AutofacSettings.Converters
 
             return type.IsEnum
                 ? Enum.Parse(type, settingValue)
-                : System.Convert.ChangeType(settingValue, type);
+                : System.Convert.ChangeType(settingValue, type);    
         }
     }
 }

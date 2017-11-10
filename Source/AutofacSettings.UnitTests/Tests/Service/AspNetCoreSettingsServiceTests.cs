@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutofacSettings.Exceptions;
 using AutofacSettings.UnitTests.Models;
 using AutofacSettings.UnitTests.Services;
 using FluentAssertions;
@@ -54,6 +55,17 @@ namespace AutofacSettings.UnitTests.Tests.Service
             var expectedLoggingSettings = new { Enabled = true, IncludeDetail = true };
             var loggingSettings = await service.GetSettings(typeof(LoggingSettings));
             loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
+        }
+
+        [Theory]
+        [AutoData]
+        public async Task GetSettingsInvalidTypeShouldThrow(
+            TestAspNetCoreSettingsSource source,
+            SettingsServiceBuilder serviceBuilder)
+        {
+            var service = serviceBuilder.WithSource(source).Build();
+            await Assert.ThrowsAsync<AutofacSettingsConversionException>(
+                () => service.GetSettings<ApiSettings>());
         }
     }
 }

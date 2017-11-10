@@ -8,11 +8,11 @@ namespace AutofacSettings.Sources
 {
     public class AspNetCoreSettingsSource : ISettingsSource
     {
-        private readonly IConfiguration settings;
+        private readonly IConfiguration configuration;
 
-        public AspNetCoreSettingsSource(IConfiguration settings)
+        public AspNetCoreSettingsSource(IConfiguration configuration)
         {
-            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public Task<string> GetSetting(string settingName)
@@ -22,12 +22,12 @@ namespace AutofacSettings.Sources
                 throw new ArgumentNullException(nameof(settingName));
             }
 
-            return Task.FromResult(this.settings[settingName]);
+            return Task.FromResult(this.configuration[settingName]);
         }
 
         public Task<IDictionary<string, string>> GetSettings()
         {
-            var dictionary = this.settings.AsEnumerable().ToDictionary(
+            var dictionary = this.configuration.AsEnumerable().ToDictionary(
                 c => c.Key,
                 c => c.Value) as IDictionary<string, string>;
 

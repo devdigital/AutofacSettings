@@ -14,14 +14,14 @@ namespace AutofacSettings.UnitTests.Services
 
         private ISettingConverter converter;
 
-        private IMissingSettingHandler handler;
+        private IInvalidSettingHandler handler;
 
         public SettingsServiceBuilder()
         {
             this.appKeyPrefix = string.Empty;
             this.settingsPostfix = "Settings";
             this.converter = new DefaultSettingConverter();
-            this.handler = new ThrowOnMissingSettingHandler();
+            this.handler = new ThrowOnInvalidSettingHandler();
         }
 
         public SettingsServiceBuilder WithSource(ISettingsSource source)

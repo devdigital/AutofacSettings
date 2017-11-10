@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutofacSettings.Converters;
@@ -72,7 +73,8 @@ namespace AutofacSettings
             var settingsPrefix = $"{prefix}{type.Name.Replace(this.settingsPostfix, string.Empty)}:";
 
             var settingTypeProperties = type.GetProperties(
-                BindingFlags.Instance | BindingFlags.Public);
+                BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => p.CanWrite);
 
             foreach (var property in settingTypeProperties)
             {

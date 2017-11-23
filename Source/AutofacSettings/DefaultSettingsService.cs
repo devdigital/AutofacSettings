@@ -47,7 +47,7 @@ namespace AutofacSettings
             }
 
             var settingValue = await this.source.GetSetting(settingName);
-            return string.IsNullOrWhiteSpace(settingValue) 
+            return settingValue == null 
                 ? defaultValue 
                 : this.converter.Convert<TValue>(settingValue);
         }
@@ -81,7 +81,7 @@ namespace AutofacSettings
                 var settingName = $"{settingsPrefix}{property.Name}";
 
                 var settingValue = await this.source.GetSetting(settingName);
-                if (string.IsNullOrWhiteSpace(settingValue))
+                if (settingValue == null)
                 {
                     this.handler.HandleMissingSetting(type, settingName);
                     continue;

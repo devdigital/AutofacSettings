@@ -65,7 +65,43 @@ namespace AutofacSettings.UnitTests.Tests.Service
         {
             var service = serviceBuilder.WithSource(source).Build();
             await Assert.ThrowsAsync<AutofacSettingsConversionException>(
-                () => service.GetSettings<ApiSettings>());
+                () => service.GetSettings<InvalidSettings>());
+        }
+
+        [Theory]
+        [AutoData]
+        public async Task GetSettingEmptyStringShouldReturnEmptyString(
+            TestAspNetCoreSettingsSource source,
+            SettingsServiceBuilder serviceBuilder,
+            string defaultValue)
+        {
+            var service = serviceBuilder.WithSource(source).Build();
+            var setting = await service.GetSettingValue("Api:Path", defaultValue);
+            Assert.Equal(string.Empty, setting);
+        }
+
+        [Theory]
+        [AutoData]
+        public async Task GetSettingsEmptyStringShouldReturnEmptyString(
+            TestAspNetCoreSettingsSource source,
+            SettingsServiceBuilder serviceBuilder,
+            string defaultValue)
+        {
+            var service = serviceBuilder.WithSource(source).Build();
+            var settings = await service.GetSettings<ApiSettings>();
+            Assert.Equal(string.Empty, settings.Path);
+        }
+
+        [Theory]
+        [AutoData]
+        public async Task GetSettingNullShouldReturnDefaultSetting(
+            TestAspNetCoreSettingsSource source,
+            SettingsServiceBuilder serviceBuilder,
+            string defaultValue)
+        {
+            var service = serviceBuilder.WithSource(source).Build();
+            var setting = await service.GetSettingValue("Api:Foo", defaultValue);
+            Assert.Equal(defaultValue, setting);
         }
     }
 }

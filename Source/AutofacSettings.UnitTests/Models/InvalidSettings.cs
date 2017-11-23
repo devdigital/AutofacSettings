@@ -1,9 +1,7 @@
 namespace AutofacSettings.UnitTests.Models
 {
-    internal class ApiSettings
+    internal class InvalidSettings
     {
         public bool Enabled { get; set; }
-
-        public string Path { get; set; }
     }
 }

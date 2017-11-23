@@ -53,7 +53,7 @@ namespace AutofacSettings.Sources
             foreach (var key in keys)
             {
                 var settingValue = await this.source.GetSetting(key);
-                if (!string.IsNullOrWhiteSpace(settingValue))
+                if (settingValue != null)
                 {
                     return settingValue;
                 }

@@ -11,15 +11,15 @@ namespace AutofacSettings.Converters
         }
 
         public object Convert(string settingValue, Type type)
-        {            
-            if (string.IsNullOrWhiteSpace(settingValue))
-            {
-                return null;
-            }
-
+        {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
+            }
+
+            if (settingValue == null)
+            {
+                return null;
             }
 
             return type.IsEnum

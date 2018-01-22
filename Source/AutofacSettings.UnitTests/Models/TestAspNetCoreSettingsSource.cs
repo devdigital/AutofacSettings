@@ -1,12 +1,24 @@
-﻿using System.IO;
-using AutofacSettings.Sources;
-using Microsoft.Extensions.Configuration;
+﻿// <copyright file="TestAspNetCoreSettingsSource.cs" company="DevDigital">
+// Copyright (c) DevDigital. All rights reserved.
+// </copyright>
 
 namespace AutofacSettings.UnitTests.Models
 {
+    using System.IO;
+    using AutofacSettings.Sources;
+    using Microsoft.Extensions.Configuration;
+
+    /// <summary>
+    /// Test ASP.NET Core settings source.
+    /// </summary>
+    /// <seealso cref="AutofacSettings.Sources.AspNetCoreSettingsSource" />
     public class TestAspNetCoreSettingsSource : AspNetCoreSettingsSource
     {
-        public TestAspNetCoreSettingsSource() : base(Settings())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAspNetCoreSettingsSource"/> class.
+        /// </summary>
+        public TestAspNetCoreSettingsSource()
+            : base(Settings())
         {
         }
 

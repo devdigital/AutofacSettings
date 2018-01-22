@@ -1,13 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using AutofacSettings.Converters;
-using AutofacSettings.Exceptions;
-using AutofacSettings.Handlers;
+﻿// <copyright file="DefaultSettingsService.cs" company="DevDigital">
+// Copyright (c) DevDigital. All rights reserved.
+// </copyright>
 
 namespace AutofacSettings
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using AutofacSettings.Converters;
+    using AutofacSettings.Exceptions;
+    using AutofacSettings.Handlers;
+
+    /// <summary>
+    /// Default settings service.
+    /// </summary>
+    /// <seealso cref="AutofacSettings.ISettingsService" />
     public class DefaultSettingsService : ISettingsService
     {
         private readonly string appKeyPrefix;
@@ -20,10 +28,18 @@ namespace AutofacSettings
 
         private readonly IInvalidSettingHandler handler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultSettingsService"/> class.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="appKeyPrefix">The application key prefix.</param>
+        /// <param name="settingsPostfix">The settings postfix.</param>
+        /// <param name="converter">The converter.</param>
+        /// <param name="handler">The handler.</param>
         public DefaultSettingsService(
             ISettingsSource source,
             string appKeyPrefix = "",
-            string settingsPostfix = "Settings",            
+            string settingsPostfix = "Settings",
             ISettingConverter converter = null,
             IInvalidSettingHandler handler = null)
         {
@@ -39,6 +55,7 @@ namespace AutofacSettings
             this.handler = handler ?? new ThrowOnInvalidSettingHandler();
         }
 
+        /// <inheritdoc />
         public async Task<TValue> GetSettingValue<TValue>(string settingName, TValue defaultValue)
         {
             if (string.IsNullOrWhiteSpace(settingName))
@@ -47,16 +64,19 @@ namespace AutofacSettings
             }
 
             var settingValue = await this.source.GetSetting(settingName);
-            return settingValue == null 
-                ? defaultValue 
+            return settingValue == null
+                ? defaultValue
                 : this.converter.Convert<TValue>(settingValue);
         }
 
-        public async Task<TSettings> GetSettings<TSettings>() where TSettings : class
+        /// <inheritdoc />
+        public async Task<TSettings> GetSettings<TSettings>()
+            where TSettings : class
         {
             return await this.GetSettings(typeof(TSettings)) as TSettings;
         }
 
+        /// <inheritdoc />
         public async Task<object> GetSettings(Type type)
         {
             if (type == null)
@@ -100,11 +120,11 @@ namespace AutofacSettings
                         $"There was an exception converting setting '{settingName}' value of '{settingValue}' to type {property.PropertyType}.";
 
                     throw new AutofacSettingsConversionException(message, exception);
-                } 
+                }
 
                 property.SetValue(instance, propertyValue, null);
             }
-          
+
             return instance;
         }
     }

@@ -1,12 +1,19 @@
-﻿using System.Threading.Tasks;
-using AutofacSettings.UnitTests.Models;
-using AutofacSettings.UnitTests.Services;
-using FluentAssertions;
-using Ploeh.AutoFixture.Xunit2;
-using Xunit;
+﻿// <copyright file="AppConfigSettingsServiceTests.cs" company="DevDigital">
+// Copyright (c) DevDigital. All rights reserved.
+// </copyright>
 
 namespace AutofacSettings.UnitTests.Tests.Service
 {
+    using System.Threading.Tasks;
+    using AutofacSettings.UnitTests.Models;
+    using AutofacSettings.UnitTests.Services;
+    using FluentAssertions;
+    using Ploeh.AutoFixture.Xunit2;
+    using Xunit;
+
+    #pragma warning disable SA1600
+    #pragma warning disable 1591
+
     public class AppConfigSettingsServiceTests
     {
         [Theory]

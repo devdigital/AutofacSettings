@@ -1,21 +1,46 @@
-﻿using System;
-using AutofacSettings.Converters;
-using AutofacSettings.Handlers;
+﻿// <copyright file="SettingsServiceBuilder.cs" company="DevDigital">
+// Copyright (c) DevDigital. All rights reserved.
+// </copyright>
 
 namespace AutofacSettings.UnitTests.Services
 {
+    using System;
+    using AutofacSettings.Converters;
+    using AutofacSettings.Handlers;
+
+    /// <summary>
+    /// Settings service builder.
+    /// </summary>
     public class SettingsServiceBuilder
     {
-        private string appKeyPrefix;
+        /// <summary>
+        /// The application key prefix
+        /// </summary>
+        private readonly string appKeyPrefix;
 
-        private string settingsPostfix;
+        /// <summary>
+        /// The settings postfix
+        /// </summary>
+        private readonly string settingsPostfix;
 
+        /// <summary>
+        /// The converter
+        /// </summary>
+        private readonly ISettingConverter converter;
+
+        /// <summary>
+        /// The handler
+        /// </summary>
+        private readonly IInvalidSettingHandler handler;
+
+        /// <summary>
+        /// The source
+        /// </summary>
         private ISettingsSource source;
 
-        private ISettingConverter converter;
-
-        private IInvalidSettingHandler handler;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsServiceBuilder"/> class.
+        /// </summary>
         public SettingsServiceBuilder()
         {
             this.appKeyPrefix = string.Empty;
@@ -24,19 +49,28 @@ namespace AutofacSettings.UnitTests.Services
             this.handler = new ThrowOnInvalidSettingHandler();
         }
 
+        /// <summary>
+        /// With setting source.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns>The builder.</returns>
         public SettingsServiceBuilder WithSource(ISettingsSource source)
         {
             this.source = source ?? throw new ArgumentNullException(nameof(source));
             return this;
         }
 
+        /// <summary>
+        /// Builds this instance.
+        /// </summary>
+        /// <returns>The settings service.</returns>
         public ISettingsService Build()
         {
             return new DefaultSettingsService(
                 this.source,
                 this.appKeyPrefix,
                 this.settingsPostfix,
-                this.converter, 
+                this.converter,
                 this.handler);
         }
     }

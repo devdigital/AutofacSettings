@@ -1,11 +1,23 @@
-﻿using System.Collections.Specialized;
-using AutofacSettings.Sources;
+﻿// <copyright file="TestAppConfigSettingsSource.cs" company="DevDigital">
+// Copyright (c) DevDigital. All rights reserved.
+// </copyright>
 
 namespace AutofacSettings.UnitTests.Models
 {
+    using System.Collections.Specialized;
+    using AutofacSettings.Sources;
+
+    /// <summary>
+    /// Test app config settings source.
+    /// </summary>
+    /// <seealso cref="AutofacSettings.Sources.AppConfigSettingsSource" />
     public class TestAppConfigSettingsSource : AppConfigSettingsSource
     {
-        public TestAppConfigSettingsSource() : base(Settings())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAppConfigSettingsSource"/> class.
+        /// </summary>
+        public TestAppConfigSettingsSource()
+            : base(Settings())
         {
         }
 
@@ -14,7 +26,7 @@ namespace AutofacSettings.UnitTests.Models
             return new NameValueCollection
             {
                 { "Logging:Enabled", "true" },
-                { "Logging:IncludeDetail", "true" }
+                { "Logging:IncludeDetail", "true" },
             };
         }
     }

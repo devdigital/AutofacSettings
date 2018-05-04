@@ -14,10 +14,10 @@ Add the registration source to the Autofac container builder:
 var builder = new ContainerBuilder();
 
 builder.RegisterSource(
-  new AutofacSettingsSource(new AspNetCoreSettingsService(configuration));
+  new AutofacSettingsRegistrationSource(new AspNetCoreSettingsService(configuration));
 ```
 
-The `AutofacSettingsSource` requires an `ISettingsSource`. This provides the following methods:
+The `AutofacSettingsRegistrationSource` requires an `ISettingsSource`. This provides the following methods:
 
 ```
 public interface ISettingsService

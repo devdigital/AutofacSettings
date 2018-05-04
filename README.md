@@ -34,7 +34,7 @@ You can implement this interface to read settings from any source (or compose se
 
 `AspNetCoreSettingsService` takes your ASP.NET Core `IConfiguration` to read from any sources you've configured with the ASP.NET Core configuration builder.
 
-`AppConfigSettingsService` takes a `NameValueCollection`, for example `Configuration.AppSettings`, for reading app settings from an app/web.config file. 
+`AppConfigSettingsService` takes a `NameValueCollection`, for example `ConfigurationManager.AppSettings`, for reading app settings from an app/web.config file. 
 
 The constructor of these setting services can also take these optional parameters:
 

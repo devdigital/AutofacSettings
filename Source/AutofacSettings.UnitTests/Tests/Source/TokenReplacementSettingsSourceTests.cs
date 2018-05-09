@@ -6,7 +6,7 @@ namespace AutofacSettings.UnitTests.Tests.Source
 {
     using System.Threading.Tasks;
     using AutofacSettings.UnitTests.Models;
-    using Ploeh.AutoFixture.Xunit2;
+    using AutoFixture.Xunit2;
     using Xunit;
 
     #pragma warning disable SA1600

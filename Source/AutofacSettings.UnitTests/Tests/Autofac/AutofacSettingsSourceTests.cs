@@ -6,9 +6,9 @@ namespace AutofacSettings.UnitTests.Tests.Autofac
 {
     using AutofacSettings.UnitTests.Models;
     using AutofacSettings.UnitTests.Services;
+    using AutoFixture.Xunit2;
     using FluentAssertions;
     using global::Autofac;
-    using Ploeh.AutoFixture.Xunit2;
     using Xunit;
 
     #pragma warning disable SA1600
@@ -36,7 +36,7 @@ namespace AutofacSettings.UnitTests.Tests.Autofac
                 IncludeDetail = true,
             };
 
-            loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
+            loggingSettings.Should().BeEquivalentTo(expectedLoggingSettings);
         }
     }
 }

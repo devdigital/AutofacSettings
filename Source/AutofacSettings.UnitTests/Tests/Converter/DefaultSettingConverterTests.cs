@@ -6,9 +6,9 @@ namespace AutofacSettings.UnitTests.Tests.Converter
 {
     using System;
     using System.Collections.Generic;
+    using AutoFixture.Xunit2;
     using Converters;
     using Models;
-    using Ploeh.AutoFixture.Xunit2;
     using Xunit;
 
     #pragma warning disable SA1600

@@ -1,20 +1,18 @@
-#addin "Cake.FileHelpers"
-#addin nuget:?package=Newtonsoft.Json&version=9.0.1
+#load "nuget:?package=Cake.Mix&version=0.13.0"
 
 var target = Argument("Target", "Default");
 var configuration = Argument("Configuration", "Release");
 
 Information("Running target " + target + " in configuration " + configuration);
 
-var packageJsonText = FileReadText("./package.json");
-var packageJson = Newtonsoft.Json.Linq.JObject.Parse(packageJsonText);
-var buildNumber = packageJson.Property("version").Value;
+var packageJson = new PackageJson(Context, "./package.json");
+var buildNumber = packageJson.GetVersion();
 
 var artifactsDirectory = Directory("./artifacts");
 
 var projects = new List<string>
 {
-  "./Source/AutofacSettings/AutofacSettings.csproj",  
+  "./Source/AutofacSettings/AutofacSettings.csproj"
 };
 
 Task("Clean")
@@ -23,38 +21,21 @@ Task("Clean")
         CleanDirectory(artifactsDirectory);
     });
 
-Task("Restore")
+Task("SetNuSpecVersion")
     .IsDependentOn("Clean")
-    .Does(() =>
+    .Does(() => 
     {
-        foreach(var project in projects)
-        {
-          DotNetCoreRestore(project);
-        }
-    });
-
-Task("Build")
-    .IsDependentOn("Restore")
-    .Does(() =>
-    {
-        var solutions = GetFiles("**/*.sln");
-        foreach(var solution in solutions)
-        {
-            Information("Building solution " + solution);
-            DotNetCoreBuild(
-                solution.ToString(),
-                new DotNetCoreBuildSettings()
-                {
-                    Configuration = configuration,
-                });
-        }
+        var nuSpecFile = "./Source/AutofacSettings/AutofacSettings.nuspec";
+        TransformTextFile(nuSpecFile)
+            .WithToken("version",  buildNumber.ToString())
+            .Save(nuSpecFile);
     });
 
 Task("Test")
-    .IsDependentOn("Build")
+    .IsDependentOn("SetNuSpecVersion")
     .Does(() =>
     {
-        var projects = GetFiles("./test/**/*Test.csproj");
+        var projects = GetFiles("./**/*Tests.csproj");
         foreach(var project in projects)
         {
             Information("Testing project " + project);
@@ -62,24 +43,19 @@ Task("Test")
                 project.ToString(),
                 new DotNetCoreTestSettings()
                 {
-                    // Currently not possible? https://github.com/dotnet/cli/issues/3114
-                    // ArgumentCustomization = args => args
-                    //     .Append("-xml")
-                    //     .Append(artifactsDirectory.Path.CombineWithFilePath(project.GetFilenameWithoutExtension()).FullPath + ".xml"),
-                    Configuration = configuration,
-                    NoBuild = true
+                    Configuration = configuration,                    
                 });
         }
     });
 
 Task("Pack")
-    .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .Does(() =>
     {
         var version = buildNumber.ToString();
         foreach (var project in projects)
         {
-            Information("Packing project " + project);
+            Information("Packing dotnetcore project " + project);
             DotNetCorePack(
                 project.ToString(),
                 new DotNetCorePackSettings()
@@ -87,7 +63,7 @@ Task("Pack")
                     Configuration = configuration,
                     OutputDirectory = artifactsDirectory,
                     VersionSuffix = version,
-                    ArgumentCustomization  = builder => builder.Append("/p:PackageVersion=" + version),
+                    ArgumentCustomization  = builder => builder.Append("/p:PackageVersion=" + version)
                 });
         }
     });

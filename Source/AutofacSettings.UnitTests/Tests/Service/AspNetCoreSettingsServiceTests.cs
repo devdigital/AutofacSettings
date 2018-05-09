@@ -8,8 +8,8 @@ namespace AutofacSettings.UnitTests.Tests.Service
     using AutofacSettings.Exceptions;
     using AutofacSettings.UnitTests.Models;
     using AutofacSettings.UnitTests.Services;
+    using AutoFixture.Xunit2;
     using FluentAssertions;
-    using Ploeh.AutoFixture.Xunit2;
     using Xunit;
 
     #pragma warning disable SA1600
@@ -49,7 +49,7 @@ namespace AutofacSettings.UnitTests.Tests.Service
             var service = serviceBuilder.WithSource(source).Build();
             var expectedLoggingSettings = new LoggingSettings { Enabled = true, IncludeDetail = true };
             var loggingSettings = await service.GetSettings<LoggingSettings>();
-            loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
+            loggingSettings.Should().BeEquivalentTo(expectedLoggingSettings);
         }
 
         [Theory]
@@ -61,7 +61,7 @@ namespace AutofacSettings.UnitTests.Tests.Service
             var service = serviceBuilder.WithSource(source).Build();
             var expectedLoggingSettings = new { Enabled = true, IncludeDetail = true };
             var loggingSettings = await service.GetSettings(typeof(LoggingSettings));
-            loggingSettings.ShouldBeEquivalentTo(expectedLoggingSettings);
+            loggingSettings.Should().BeEquivalentTo(expectedLoggingSettings);
         }
 
         [Theory]
